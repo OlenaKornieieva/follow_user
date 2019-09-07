@@ -10,6 +10,8 @@ class FollowBtn extends React.Component {
         this.setState({following: true});
         this.props.counterInc();
         this.setState({hover: false});
+
+
     };
     toggleUnfollow(){
         this.setState({following: false});

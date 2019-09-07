@@ -1,5 +1,5 @@
 import React from 'react';
-import UsersService from "../services/UsersService";
+import UsersService, {TEMPLATE_USERS} from "../services/UsersService";
 import UsersList from "../usersList/usersList";
 import LoginBtn from "../loginBtn/loginBtn";
 
@@ -46,7 +46,7 @@ class Login extends React.Component {
                 this.setState({curUser});
 
                 localStorage.setItem("user_id", curUser.id);
-
+                localStorage.setItem(curUser.id, JSON.stringify(TEMPLATE_USERS));
             })
             .catch((error) => {
                 this.authSetResult('authError');

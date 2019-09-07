@@ -21,3 +21,17 @@ export default class UsersService {
         })
     };
 }
+
+export const TEMPLATE_USERS = [
+    {100: false},
+    {101: false},
+    {102: false},
+    {103: false},
+    {104: false},
+    {105: false},
+    {106: false},
+    {107: false},
+    {108: false},
+    {109: false},
+    {110: false},
+];
