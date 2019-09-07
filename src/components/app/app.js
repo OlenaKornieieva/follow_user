@@ -1,7 +1,6 @@
 import React from 'react';
 import './app.css';
 import Login from "../login/login";
-import UsersList from "../usersList/usersList";
 
 class App extends React.Component {
 
@@ -16,8 +15,8 @@ class App extends React.Component {
     }
 
     render() {
-
         const {userId} = this.state;
+
         return (
             <Login userId={userId}/>
         )

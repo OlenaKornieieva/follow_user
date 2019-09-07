@@ -1,60 +1,58 @@
 import React from 'react';
-import UsersService, {TEMPLATE_USERS} from "../services/UsersService";
+import UsersService from "../services/UsersService";
 import UsersList from "../usersList/usersList";
 import LoginBtn from "../loginBtn/loginBtn";
 
 class Login extends React.Component {
+
     state = {
         email: "",
         password: "",
         authResult: "",
-        curUser: ""
+        curUser: "",
     };
+
     usersService = new UsersService();
 
-    componentDidUpdate(prevProps, prevState, snapshot)    {
-        if(prevProps.userId !== this.props.userId) {
-            if(this.props.userId) {
-                this.usersService.getUsers().then((users)=>{
-                    const curUser = users.find((user) => {
-                        return user.id === +this.props.userId
-                    });
-                    this.setState({curUser});
-                })
-            }
+    componentDidUpdate(prevProps) {
+        if (prevProps.userId !== this.props.userId) {
+            this.usersService.getUsers().then((users) => {
+                const curUser = users.find((user) => {
+                    return user.id === +this.props.userId
+                });
+                this.setState({curUser});
+            })
         }
-
     }
 
     handleSubmit = (event) => {
-        event.preventDefault();
-
         const {email, password} = this.state;
-
+        event.preventDefault();
         if (!(email && password)) {
             return;
         }
         this.usersService.getUsers()
             .then((users) => {
-                this.setState({email});
-                this.authSetResult('authOk');
-
-                const curUser = users.find((user)=> {
+                const curUser = users.find((user) => {
                     return user.email === email
                 });
-
+                if (curUser === undefined) {
+                    this.authSetResult('authError');
+                    return;
+                }
+                this.setState({email});
+                this.authSetResult('authOk');
                 this.setState({curUser});
-
                 localStorage.setItem("user_id", curUser.id);
-                localStorage.setItem(curUser.id, JSON.stringify(TEMPLATE_USERS));
             })
             .catch((error) => {
+                console.log(error);
                 this.authSetResult('authError');
             });
     };
 
     authSetResult = (result) => {
-        this.setState({authResult: `${result}`, loading: false});
+        this.setState({authResult: `${result}`});
         return result;
     };
 
@@ -63,50 +61,60 @@ class Login extends React.Component {
 
         if (authResult === 'authOk' || curUser) {
             return (
-                <div>
-                    Welcome, {curUser.name}<br/>
-                    Choose users follow:<br/>
-                    <UsersList curUser={curUser}/>
+                <div className="row d-flex justify-content-center">
+                    <div className="col-sm-8">
+                        <p className="m-3">Welcome, <span className="font-weight-bold">{curUser.name}</span></p>
+                        <p className="m-3">Choose users follow:</p>
+                        <UsersList curUser={curUser}/>
+                    </div>
                 </div>
             )
         }
-        if (authResult === 'authError'){
+
+        if (authResult === 'authError') {
             return (
-                <div>Must be signed in</div>
+                <div className="d-flex justify-content-center mt-5">Must be signed in</div>
             )
         }
+
         return (
-            <form onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                    <div className="input-container">
-                        <input required
-                               className="form-control"
-                               type="email"
-                               placeholder="Email"
-                               value={email}
-                               onChange={(e) => {
-                                   this.setState({email: e.target.value})
-                               }}
-                        />
+            <div className="container d-flex justify-content-center">
+                <div className="row">
+                    <div className="mt-5">
+                        <form onSubmit={this.handleSubmit}>
+                            <div className="form-group">
+                                <div className="input-container">
+                                    <input required
+                                           className="form-control"
+                                           type="email"
+                                           placeholder="Email"
+                                           value={email}
+                                           onChange={(e) => {
+                                               this.setState({email: e.target.value})
+                                           }}
+                                    />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <div className="input-container">
+                                    <input required
+                                           className="form-control"
+                                           type="password"
+                                           placeholder="Password"
+                                           value={password}
+                                           onChange={(e) => {
+                                               this.setState({password: e.target.value})
+                                           }}
+                                    />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <LoginBtn/>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div className="form-group text-danger">
-                    <div className="input-container">
-                        <input required
-                               className="form-control"
-                               type="password"
-                               placeholder="Password"
-                               value={password}
-                               onChange={(e) => {
-                                   this.setState({password: e.target.value})
-                               }}
-                        />
-                    </div>
-                </div>
-                <div className="form-group">
-                    <LoginBtn/>
-                </div>
-            </form>
+            </div>
         )
     }
 }

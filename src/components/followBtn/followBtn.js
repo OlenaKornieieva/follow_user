@@ -2,24 +2,27 @@ import React from 'react';
 import './followBtn.css';
 
 class FollowBtn extends React.Component {
+
     state = {
         following: false,
         hover: false
     };
+
     toggleFollow(){
         this.setState({following: true});
         this.props.counterInc();
         this.setState({hover: false});
-
-
     };
+
     toggleUnfollow(){
         this.setState({following: false});
         this.props.counterDec();
     };
+
     toggleHoverOn(){
         this.setState({hover: true});
     };
+
     toggleHoverOff(){
         this.setState({hover: false});
     };

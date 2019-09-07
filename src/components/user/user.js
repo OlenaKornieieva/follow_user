@@ -3,8 +3,9 @@ import './user.css';
 import FollowBtn from "../followBtn/followBtn";
 
 class User extends React.Component {
+
     state = {
-        counter: 0
+        counter: this.props.user.followers
     };
 
     handleDec() {

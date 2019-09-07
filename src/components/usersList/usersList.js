@@ -4,11 +4,13 @@ import UsersService from "../services/UsersService";
 import User from "../user/user";
 
 class UsersList extends React.Component {
-    userService = new UsersService();
+
     state = {
         users: [],
         error: null,
     };
+
+    userService = new UsersService();
 
     componentDidMount() {
         this.userService.getUsers().then((users) => {
@@ -19,15 +21,15 @@ class UsersList extends React.Component {
     }
 
     render() {
-        let {users} = this.state;
-        const {curUser, userId} = this.props;
 
-        if(curUser){
-            users = users.filter((user)=>{
+        let {users} = this.state;
+        const {curUser} = this.props;
+
+        if (curUser) {
+            users = users.filter((user) => {
                 return user.id !== curUser.id
             });
         }
-
 
         return (
             <div>

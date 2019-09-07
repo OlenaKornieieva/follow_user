@@ -3,8 +3,8 @@ import './loginBtn.css';
 
 const LoginBtn = () => {
     return(
-        <button className='btn btn-primary'
-                type="submit"
+        <button className='btn btn-primary login'
+                type='submit'
                 >Login</button>
     )
 };
